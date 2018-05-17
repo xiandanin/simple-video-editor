@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <EditText
+        android:id="@+id/ed_start_hour"
+        style="@style/timer_edit" />
+
+    <TextView style="@style/timer_edit_divider" />
+
+    <EditText
+        android:id="@+id/ed_start_minute"
+        style="@style/timer_edit" />
+
+    <TextView style="@style/timer_edit_divider" />
+
+
+    <EditText
+        android:id="@+id/ed_start_second"
+        style="@style/timer_edit" />
+
+    <ImageView
+        android:layout_width="10dp"
+        android:layout_height="1dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/colorAccent" />
+
+    <EditText
+        android:id="@+id/ed_end_hour"
+        style="@style/timer_edit" />
+
+    <TextView style="@style/timer_edit_divider" />
+
+    <EditText
+        android:id="@+id/ed_end_minute"
+        style="@style/timer_edit" />
+
+    <TextView
+        style="@style/timer_edit_divider"
+        android:layout_toRightOf="@id/ed_end_minute" />
+
+    <EditText
+        android:id="@+id/ed_end_second"
+        style="@style/timer_edit" />
+</LinearLayout>

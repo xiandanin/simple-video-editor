@@ -57,7 +57,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         format.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
 
@@ -142,6 +149,8 @@ public class MainActivity extends AppCompatActivity {
 
             }
             cursor.close();
+        }else{
+            Toast.makeText(this, "查找视频失败", Toast.LENGTH_SHORT).show();
         }
     }
 

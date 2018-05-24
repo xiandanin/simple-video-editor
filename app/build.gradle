@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'replugin-plugin-gradle'
 
 android {
     compileSdkVersion 26
@@ -17,6 +16,8 @@ android {
         }
     }
 }
+
+apply plugin: 'replugin-plugin-gradle'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])

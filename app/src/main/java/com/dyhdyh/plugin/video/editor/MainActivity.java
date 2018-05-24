@@ -14,6 +14,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -55,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
         format.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
 
@@ -230,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
                     };
 
                     SpannableStringBuilder builder = new SpannableStringBuilder(output);
-                    builder.setSpan(spannable,0, output.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    builder.setSpan(spannable, 0, output.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     tv_info.append(builder);
                     tv_info.append("\n");
                 }
@@ -251,7 +254,7 @@ public class MainActivity extends AppCompatActivity {
             Uri uri;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                uri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".fileprovider",parentFlie);
+                uri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".fileprovider", parentFlie);
             } else {
                 uri = Uri.fromFile(parentFlie);
             }

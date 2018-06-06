@@ -5,6 +5,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.media.MediaMetadataRetriever;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
@@ -81,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
         if (!checkExternalStart()) {
             clickPickVideo(null);
         }
+
     }
 
     private boolean checkExternalStart() {
@@ -111,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void handleVideoUri(Uri uri) {
-        Log.d("---------->", uri + "-->");
+        Log.d("文件Uri---------->", "--->" + uri);
         ContentResolver cr = this.getContentResolver();
         final String uriString = URLDecoder.decode(uri.toString());
         String beginString = "external_files/";
@@ -129,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
             selectionArg = uriString.substring(beginIndex);
         }
 
-        Log.d("---------->", selectionArg + "-->");
+        Log.d("文件路径---------->", "--->" + selectionArg);
         Cursor cursor = cr.query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, new String[]{
                 MediaStore.Video.Media.DATA,
                 MediaStore.Video.Media.DURATION,
@@ -137,21 +139,29 @@ public class MainActivity extends AppCompatActivity {
                 MediaStore.Video.Media.WIDTH,
                 MediaStore.Video.Media.HEIGHT,
         }, MediaStore.Video.Media.DATA + " like ?", new String[]{"%" + selectionArg}, null);
+        long size = 0;
+        int width = 0;
+        int height = 0;
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 mInputPath = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DATA));
                 mDuration = cursor.getLong(cursor.getColumnIndex(MediaStore.Video.Media.DURATION));
-                long size = cursor.getLong(cursor.getColumnIndex(MediaStore.Video.Media.SIZE));
-                int width = cursor.getInt(cursor.getColumnIndex(MediaStore.Video.Media.WIDTH));
-                int height = cursor.getInt(cursor.getColumnIndex(MediaStore.Video.Media.HEIGHT));
-
-                handleVideoInfo(size, width, height);
-
+                size = cursor.getLong(cursor.getColumnIndex(MediaStore.Video.Media.SIZE));
+                width = cursor.getInt(cursor.getColumnIndex(MediaStore.Video.Media.WIDTH));
+                height = cursor.getInt(cursor.getColumnIndex(MediaStore.Video.Media.HEIGHT));
             }
             cursor.close();
-        }else{
-            Toast.makeText(this, "查找视频失败", Toast.LENGTH_SHORT).show();
+        } else {
+            mInputPath = selectionArg;
+            MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+            retriever.setDataSource(mInputPath);
+            size = new File(mInputPath).length();
+            mDuration = Long.parseLong(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
+            width = Integer.parseInt(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH));
+            height = Integer.parseInt(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT));
         }
+        handleVideoInfo(size, width, height);
+
     }
 
 
